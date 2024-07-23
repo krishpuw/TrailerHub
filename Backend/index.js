@@ -33,7 +33,6 @@ app.use(cookieParser());
 // api 
 app.use("/api/v1/user",userRoute)
 
-
 app.listen(process.env.PORT,() => {
     console.log(`listen at port ${process.env.PORT}`);
 });
