@@ -1,6 +1,6 @@
 
 import { User } from "../model/userModel.js";
-import Bycrpt from "bcryptjs";
+import bcryptjs from "bcryptjs";
 
 import jwt from "jsonwebtoken";
 
@@ -25,7 +25,7 @@ export const Login = async(req,res)=>{
             });
         }
 
-        const match = await Bycrpt.compare(Password,user.Password);
+        const match = await bcryptjs.compare(Password,user.Password);
         if(!match){
             return res.status(401).json({
                 message: "Invalid Email or password!",
@@ -68,15 +68,15 @@ export  const Register = async (req, res) => {
             })
         }
 
-        const hashingpass = await Bycrpt.hash(Password,32);
+        const hashingpass = await bcryptjs.hash(Password,16);
         
 
         await User.create({
             Fullname,
             Email,
             Password:hashingpass
-        });
-        return res.status(200).json({
+        })
+        return res.status(201).json({
             message: "Account created successfully",
             success: true
         });
