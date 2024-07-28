@@ -6,6 +6,12 @@ import Header from "./Header"
 import axios from "axios";
 import { API_END_POINT } from '../utils/constant';
 
+import toast from "react-hot-toast"
+
+import {useNavigate} from "react-router-dom";
+
+import {useDispatch, useSelector} from "react-redux"
+import { setLoading, setUser } from '../redux/userSlice';
 const Login = () => {
   const [isLogin,setIsLogin] = useState(false);
 
@@ -16,6 +22,10 @@ const Login = () => {
   const [Fullname,SetFullName] = useState("");
   const [Email,SetEmail] = useState("");
   const [Password,SetPassword] = useState("");
+  const nav = useNavigate();
+  const dispatch = useDispatch();
+
+  const isLoading = useSelector(store=>store.app.isLoading);
 
   //const [Oldpass,Newpass] = useState(true);
 
@@ -25,29 +35,59 @@ const Login = () => {
   // }
   const getInputDatat = async(e)=> {
     e.preventDefault();
+    dispatch(setLoading(true));
     if(isLogin){
       //login 
       try{
-        const log = await axios.post(`${API_END_POINT}/login`,{Email,Password});
-        console.log(log);
+        const log = await axios.post(`${API_END_POINT}/login`,{Email,Password},{
+          headers:{
+              'Content-Type':'application/json'
+          },
+          withCredentials:true
+      });
 
+        console.log(log);
+        if(log.data.success){
+          toast.success(log.data.message);
+        }
+        dispatch(setUser(log.data.user));
+        nav("/browse");
       }catch(error){
+        toast.success(error.response.data.message);
         console.log(error);
 
       }
+      finally{
+        dispatch(setLoading(false));
+      };
     } else{
+      dispatch(setLoading(true));
       try{
-        const res = await axios.post(`${API_END_POINT}/register`,{Fullname,Email,Password});
+        const res = await axios.post(`${API_END_POINT}/register`,{Fullname,Email,Password},{
+          headers: {
+            'Content-Type':'application/json'
+          },
+          withCredentials:true
+        });
         console.log(res);
+      // toast.success(res.data.message);
+          if(res.data.success){
+             toast.success(res.data.message);
+       }
+       setIsLogin(true);
+
       }catch(error){
+        toast.error(error.response.data.message);
         console.log(error);
 
-      } 
+      } finally{
+        dispatch(setLoading(false));
+      }
   }
-    //console.log(Fullname,Email,Password);
-    SetFullName("");
-    SetPassword("");
-    SetEmail("");
+//    console.log(Fullname,Email,Password);
+   SetFullName("");
+   SetPassword("");
+   SetEmail("");
 
   }
   return (
@@ -66,7 +106,7 @@ const Login = () => {
             <input type='email' value={Email} onChange={(e)=>SetEmail(e.target.value)} placeholder='Email' className='p-3 outline-none my-2 rounded-sm bg-gray-800 text-white'/>
             <input type='password' value={Password} onChange={(e)=>SetPassword(e.target.value)} placeholder='Password' className='p-3 outline-none my-2 rounded-sm bg-gray-800 text-white'/>
 
-            <button className='bg-red-600 p-2 text-white rounded-sm font-medium mt-5'>{isLogin ? "Login":"SignUp"}</button>
+            <button className='bg-red-600 p-2 text-white rounded-sm font-medium mt-5'>{`${isLoading ? "loading...":(isLogin?"Login":"Signup")}`}</button>
 
             <p className='text-white mt-2'> {isLogin ? "New To KrishFlix?" : "Already Have a account -> "}<span onClick={LoginHandle} className='ml-1 text-blue-900 cursor-pointer'>{isLogin ?  "Signup Here!":"Login"}</span> </p>
 
