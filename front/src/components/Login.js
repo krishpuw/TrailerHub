@@ -1,17 +1,28 @@
 
-import {React,useState} from 'react'
+// import {React,useState} from 'react'
 
-import Header from "./Header"
+// import Header from "./Header"
 
+// import axios from "axios";
+// import { API_END_POINT } from '../utils/constant';
+
+// import toast from "react-hot-toast"
+
+// import {useNavigate} from "react-router-dom";
+
+// import {useDispatch, useSelector} from "react-redux"
+// import { setLoading, setUser } from '../redux/userSlice';
+
+import React, { useState } from 'react'
+import Header from './Header';
 import axios from "axios";
 import { API_END_POINT } from '../utils/constant';
-
 import toast from "react-hot-toast"
-
-import {useNavigate} from "react-router-dom";
-
-import {useDispatch, useSelector} from "react-redux"
+import {useNavigate} from "react-router-dom"
+import {useDispatch, useSelector} from "react-redux";
 import { setLoading, setUser } from '../redux/userSlice';
+
+
 const Login = () => {
   const [isLogin,setIsLogin] = useState(false);
 
@@ -27,13 +38,67 @@ const Login = () => {
 
   const isLoading = useSelector(store=>store.app.isLoading);
 
-  //const [Oldpass,Newpass] = useState(true);
+  // const [Oldpass,Newpass] = useState(true);
 
   // const ForgotHandle = ()=> {
   //   Newpass(!Oldpass);
 
   // }
-  const getInputDatat = async(e)=> {
+
+  // const getInputData = async (e)=>{
+  //       e.preventDefault();
+  //       dispatch(setLoading(true));
+  //       if(isLogin){
+  //           //login
+  //           const user = {Email,Password}; 
+  //           try {
+  //               const res = await axios.post(`${API_END_POINT}/login`, user,{
+  //                   headers:{
+  //                       'Content-Type':'application/json'
+  //                   },
+  //                   withCredentials:true
+  //               });
+  //               if(res.data.success){
+  //                   toast.success(res.data.message);
+  //               }
+  //               dispatch(setUser(res.data.user));
+  //               nav("/browse");
+  //           } catch (error) {
+  //             const errorMessage = error.response?.data?.message || 'An unexpected error occurred. Please try again later.';
+  //             toast.error(errorMessage);
+  //             console.error(error);
+  //             // toast.error(error.response.data.message);
+  //             //   console.log(error);
+  //           } finally {
+  //               dispatch(setLoading(false));
+  //           }
+  //       }else{
+  //           //register
+  //           dispatch(setLoading(true));
+  //           const user = {Fullname, Email, Password};
+  //           try {
+  //               const res = await axios.post(`${API_END_POINT}/register`,user,{
+  //                   headers:{
+  //                       'Content-Type':'application/json'
+  //                   },
+  //                   withCredentials:true
+  //               });
+  //               if(res.data.success){
+  //                   toast.success(res.data.message);
+  //               }
+  //               setIsLogin(true);
+  //           } catch (error) {
+  //               toast.error(error.response.data.message);
+  //               console.log(error);
+  //           } finally{
+  //               dispatch(setLoading(false));
+  //           }
+  //       }
+  //       SetFullName("");
+  //       SetEmail("");
+  //       SetPassword("");
+  //   }
+  const getInputData = async(e)=> {
     e.preventDefault();
     dispatch(setLoading(true));
     if(isLogin){
@@ -47,9 +112,9 @@ const Login = () => {
       });
 
         console.log(log);
-        if(log.data.success){
-          toast.success(log.data.message);
-        }
+       if(log.data.success){
+         toast.success(log.data.message);
+       }
         dispatch(setUser(log.data.user));
         nav("/browse");
       }catch(error){
@@ -70,7 +135,7 @@ const Login = () => {
           withCredentials:true
         });
         console.log(res);
-      // toast.success(res.data.message);
+      //toast.success(res.data.message);
           if(res.data.success){
              toast.success(res.data.message);
        }
@@ -96,7 +161,7 @@ const Login = () => {
         <div className='absolute'>
             <img className='w-[100vw] h-[55vw]' src='https://cdn.mos.cms.futurecdn.net/rDJegQJaCyGaYysj2g5XWY.jpg' alt="cover"/>
         </div>
-        <form onSubmit={getInputDatat} className='flex flex-col w-3/12 my-36 left-0 right-0   items-center  absolute justify-center mx-auto top-11 p-12 bg-black opacity-90 rounded-md'>
+        <form onSubmit={getInputData} className='flex flex-col w-3/12 my-36 left-0 right-0   items-center  absolute justify-center mx-auto top-11 p-12 bg-black opacity-90 rounded-md'>
         <h1 className='text-3xl text-white mb-5 font-bold'>{isLogin ? "Login":"SignUp"}</h1> 
           <div className='flex flex-col '>
             {

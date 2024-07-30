@@ -1,41 +1,49 @@
 import React from 'react'
 import Header from './Header'
-import {useSelector} from "react-redux"
+import { useSelector} from "react-redux"
 import {useNavigate} from "react-router-dom"
 import {useEffect} from 'react';
 import Main from './main';
 import Movie from './movie';
-import axios from "axios";
-import { playingMovies, options } from '../utils/constant';
+import useNowPlayingMovies from '../hooks/useNowplayingmovies';
+import usePopularMovies from '../hooks/usePopularMovies';
+import useToprated from '../hooks/useToprated';
+import useUpcoming from '../hooks/useUpcoming';
+
 
 const Browse = () => {
   const user = useSelector(store => store.app.user);
   const navigate = useNavigate();
-  const nowPlayingMovies = async()=>{
-    try{
-      const response = await axios.get(playingMovies,options);
-      console.log(response.data.results);
-
-    }catch(error){
-
-    }
-  }
+  
+  const toggle = useSelector(store=>store.movie.toggle);
+//hooks
+  useNowPlayingMovies();
+  usePopularMovies();
+  useToprated();
+  useUpcoming();
 
   useEffect(() => {
       if (!user) {
           navigate("/");
       }
-      nowPlayingMovies();
-  }, [user,navigate]);
+     // nowPlayingMovies();
+  }, []);
   return (
       <div >
           <Header />
           <div>
-            <Main/>
-            <Movie />
+            {
+              toggle ? <search/>:(
+              <>
+                <Main/>
+                <Movie />
+              </>
+              )
+            }
           </div>
       </div>
   )
 }
 
 export default Browse
+
