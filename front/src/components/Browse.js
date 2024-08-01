@@ -9,6 +9,7 @@ import useNowPlayingMovies from '../hooks/useNowplayingmovies';
 import usePopularMovies from '../hooks/usePopularMovies';
 import useToprated from '../hooks/useToprated';
 import useUpcoming from '../hooks/useUpcoming';
+import Search from './search';
 
 
 const Browse = () => {
@@ -33,7 +34,7 @@ const Browse = () => {
           <Header />
           <div>
             {
-              toggle ? <search/>:(
+              toggle ? <Search/>:(
               <>
                 <Main/>
                 <Movie />

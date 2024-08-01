@@ -13,6 +13,7 @@ const Header = () => {
   const user = useSelector((store) => store.app.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const toggle = useSelector(store=>store.movie.toggle);
 
   const handleLogout = async () => {
     try {
@@ -47,7 +48,7 @@ const Header = () => {
             <h1 className='text-lg font-medium text-white'>{user.Fullname}</h1>
             <div className='ml-4'>
               <button onClick={handleLogout} className='bg-red-700 text-white px-4 py-2'>Logout</button>
-              <button onClick={toggleHandle} className='bg-red-700 text-white px-4 py-2 ml-2'>Search Movie</button>
+              <button onClick={toggleHandle} className='bg-red-700 text-white px-4 py-2 ml-2'>{toggle?"Home" : "Search Movie"}</button>
             </div>
 
           </div>
